@@ -1,6 +1,6 @@
 set nu rnu
 set expandtab tabstop=4 softtabstop=4 shiftwidth=4
-set nowrap 
+set nowrap hidden
 set nobackup noswapfile
 set incsearch nohlsearch
 set scrolloff=20
@@ -54,24 +54,7 @@ EOF
 
 colorscheme gruvbox
 
-function! g:SplitSetupForCPP()
-    let l:fileName = expand('%:h:t')
-    if(expand('%:e') == 'cpp' && winnr('$') <= 2)
-        execute 'vs input.in | split output.in'
-    else
-        echo "PLESE OPEN CPP FILE"
-    endif
-endfunction
-
-function! g:CompileAndRun()
-    let l:fileName = expand('%:t:r')
-    if(expand('%:e') == 'cpp')
-        execute '!g++ '. l:fileName .'.cpp -o compiled/'. l:fileName .' 2>output.in && ./compiled/'. l:fileName .'<input.in>output.in'
-    else
-        echo "Sorry we can't compile the other file leaving cpp"
-    endif
-endfunction
-
+source ~/.config/nvim/custom/CPP.vim
 
 " SHORTCUTS FOR THE VIM EDITOR
 let mapleader=" "
