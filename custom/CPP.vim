@@ -1,7 +1,25 @@
+function! s:pythonSplitSetupForCPP()
+python3 << EOF
+import vim
+bufferSize = len(vim.windows);
+winPos = 0
+while(winPos != bufferSize):
+    winPos += 1;
+    vim.command(str(winPos) + "wincmd w")
+    vim.command("let l:fileName = expand('%:t')");
+    if vim.eval("l:fileName") == 'input.in' or vim.eval("l:fileName") == 'output.in':
+        vim.command("quit")
+        winPos -= 1
+        bufferSize -= 1
+EOF
+endfunction
+
 function! g:SplitSetupForCPP()
     let l:fileName = expand('%:h:t')
     if(expand('%:e') == 'cpp' && winnr('$') <= 2)
         execute 'vs input.in | vertical resize 40 | split output.in'
+    elseif(expand('%:e') == 'cpp' && (winnr('$') == 4 || winnr('$') == 3))
+        call s:pythonSplitSetupForCPP()
     else
         echo "PLESE OPEN CPP FILE"
     endif
